@@ -1,0 +1,132 @@
+Source code compilation of DAMASK was required for our work because it involved modifying the source code.
+\section{Install Dependencies}
+DAMASK uses many open source libraries which has to be installed before installing it. DAMASK developers have provided bash script which gives an overview of the prerequisites available in the computer.
+
+\begin{lstlisting}[language=bash, basicstyle=\small\ttfamily, frame=single]
+wget https://damask.mpie.de/files/installation/3.0.0-
+beta/DAMASK_prerequisites.sh
+sh ./DAMASK_prerequisites.sh
+cat system_report.txt
+\end{lstlisting}
+
+Running the below bash script as superuser will install all the DAMASK dependencies.
+
+\begin{lstlisting}[language=bash, basicstyle=\small\ttfamily, frame=single]
+
+#!/bin/bash
+
+# Script to install DAMASK dependencies and PETSc in home 
+# directory
+# References: Researchgate & https://damask.mpie.de/
+
+#Go to home directory
+cd "$HOME" || exit
+
+#install dependencies
+sudo apt install git build-essential cmake make autoconf 
+mpich libopenmpi-dev bison cmake-format liblapack-dev 
+libblas-dev python3 python3-pip python3-setuptools python3-vtk9 
+python3-numpy python3-scipy python3-pandas python3-matplotlib 
+python3-h5py
+
+# Download PETSc source and pick the version
+git clone https://gitlab.com/petsc/petsc.git
+cd petsc/
+git checkout v3.15.5
+
+# Configure PETSc
+./configure --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90
+--download-fblaslapack --download-hdf5 --download-fftw 
+--download-superlu --download-hypre --download-mumps 
+--download-ml --download-scalapack --with-hdf5-fortran-bindings 
+--download-chaco --download-netcdf --download-exodusii 
+--download-metis --download-parmetis --download-suitesparse 
+--download-superlu --download-superlu_dist  --download-triangle 
+--with-c2html=0  --with-debugging=0 --with-ssl=0 --with-x=0 
+--download-zlib --download-cmake --download-pnetcdf 
+--with-cxx-dialect=C++11 COPTFLAGS="-O3 -march=native" 
+CXXOPTFLAGS="-O3 -march=native" FOPTFLAGS="-O3 -march=native"
+ PETSC_ARCH=gfortran -PETSC_DIR=`pwd` --with-debugging=0
+
+#Build
+make PETSC_DIR=$HOME/petsc PETSC_ARCH=gfortran all
+#Check
+make PETSC_DIR=$HOME/petsc PETSC_ARCH=gfortran check
+
+#Go to home directory
+cd "$HOME" || exit
+
+# Lines to be added to .bashrc
+lines=($'export PETSC_DIR=/home/achal/petsc\nexport
+PETSC_ARCH=gfortran\nexport XAUTHORITY=~/.Xauthority\nexport
+HWLOC_COMPONENTS=-gl')
+
+# Check if .bashrc exists
+if [ -f ~/.bashrc ]; then
+    # Append the lines to the end of .bashrc
+    printf "%s\n" "${lines[@]}" >> ~/.bashrc
+    echo "Lines appended to ~/.bashrc"
+else
+    echo "Error: ~/.bashrc does not exist"
+    exit 1
+fi
+
+echo "Dependencies installed."
+echo "================================"
+echo -e "Run command: 'source .bashrc'"
+
+\end{lstlisting}
+
+\subsection{Git}
+Git is a distributed version control system for tracking changes in source code during software development. It was created in 2005 by Linus Torvalds, the principal developer of the Linux kernel.
+\subsection{GNU compiler Collection.}
+The GNU Compiler Collection is a open source project which provides set of compilers for various programming languages including C, C++, Fortran, and others. It was developed by the GNU Project, a free software project of the Free Software Foundation (FSF).
+\subsection{CMake}
+CMake is a cross-platform tool that helps build, test, and package software by generating native makefiles and project files. It allows developers to write portable configuration files that can build their software across different platforms and compilers.
+\subsection{MPI}
+Message Passing Interface (MPI) is a standardized and portable message-passing system designed for distributed and parallel computing. It allows multiple computers (or even multiple processor cores within the same computer) to exchange messages across distributed memory.
+\subsection{PETSc}
+Portable, Extensible Toolkit for Scientific Computation (PETSc) is a large library of simulation software developed by Argonne National Laboratory \cite{balay2020petsc}. It contains parallel linear and nonlinear equation solvers, ODE integrators, and optimization algorithms.
+
+\section{Run Checks and Install DAMASK}
+PETSc setup can be checked using an example that can be downloaded from DAMASK website:
+
+\begin{lstlisting}[language=bash, basicstyle=\small\ttfamily, frame=single]
+wget https://damask.mpie.de/files/installation/3.0.0-beta/
+PETSc_test.tar.xz
+
+tar -xf PETSc_test.tar.xz
+cd PETSc_test
+make PETSc_test
+mpirun -np 2 ./PETSc_test
+\end{lstlisting}
+
+Downloading, compilation and installation of DAMASK can be done using the bash script below:
+
+\begin{lstlisting}[language=bash, basicstyle=\small\ttfamily, frame=single]
+#!/bin/bash
+
+# Source: https://damask.mpie.de/release/installation/
+source_code.html
+
+# Create the DAMASK directory
+mkdir DAMASK
+cd DAMASK
+
+# Download and extract DAMASK
+wget https://damask.mpie.de/download/damask-3.0.0-beta.tar.xz
+wget https://damask.mpie.de/download/
+damask-3.0.0-beta.tar.xz.sha256
+sha256sum -c damask-3.0.0-beta.tar.xz.sha256 && tar -xf 
+damask-3.0.0-beta.tar.xz
+
+# Run cmake commands for grid solver
+cmake -S damask-3.0.0-beta -B build-grid -DDAMASK_SOLVER=grid
+cmake --build build-grid --target install
+
+# Run cmake commands for mesh solver
+cmake -S damask-3.0.0-beta -B build-mesh -DDAMASK_SOLVER=mesh
+cmake --build build-mesh --target install
+
+echo "Installed DAMASK_grid and DAMASK_mesh"
+\end{lstlisting}

@@ -1,0 +1,204 @@
+%For printing uncomment below line and comment next line
+%\PassOptionsToClass{12pt,a4paper, openright, toc = bibliography}{report}
+\PassOptionsToClass{12pt,a4paper, toc = bibliography}{report} 
+\documentclass{report}
+%For printing uncomment below line
+%\usepackage[a4paper, twoside, inner=3cm, outer=3cm, bindingoffset=1cm]{geometry} 
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{url}
+\usepackage[english]{babel}
+\usepackage[acronym,nonumberlist,sort=use]{glossaries}
+\usepackage{verbatim}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{nomencl}
+\usepackage{accents}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{caption}
+\usepackage{svg}
+\usepackage{hyperref}
+\usepackage{algorithm2e}
+\usepackage{algpseudocode}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=violet,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue,
+}
+
+\usepackage{miller}
+
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{siunitx}
+\usepackage{array}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+
+
+
+\setlength{\parindent}{0pt}
+
+\setlength{\textheight}{245mm}
+\setlength{\textwidth}{160mm}
+
+\setlength{\headheight}{3mm}
+\setlength{\headsep}{12mm}
+\setlength{\topmargin}{15mm}
+
+\setlength{\hoffset}{-10mm} % already accounted for in the margins
+\setlength{\voffset}{-30mm} % already accounted for in the margins
+% line, paragraphs indent & spacing
+
+\pdfinfo{
+   /Author (Achal H P)
+   /Title  (MTech Thesis)
+   /Subject (CP Modeling of Discrete Twin Evolution in HCP Metals)
+}
+
+
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    {\huge\bfseries Crystal Plasticity Modeling of Discrete Twin Evolution in Hexagonal Closed Packed Metals\par}
+    \vspace{2cm}
+    {\large A thesis submitted in partial fulfillment of \\  the requirements for the degree of \par}
+    \vspace{0.5cm}
+    {\large \bf Master of Technology}\\
+    \vspace{0.5cm}
+    {\large by }\\
+    \vspace{1cm}
+    {\large \bf Achal H. P.} \\
+    {\large \bf (Roll No. ME22MT011)} \\
+    \vspace{1.5cm}
+    {\large Under the Supervision of} \\
+    {\large \bf Professor Satyapriya Gupta \par}
+    \vfill
+    \includegraphics[width=6.5cm]{images/IIT Dh Logo.png}\\[\baselineskip]
+    \vfill
+    {\large \uppercase{Department of Mechanical, Materials, \\ and Aerospace Engineering}\par}
+    \vspace{0.25cm}
+    {\scshape\LARGE indian institute of technology dharwad\par}
+    \vspace{0.5cm}
+    {\large May 2024}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\newpage
+\cleardoublepage
+\thispagestyle{empty}
+\begin{center}
+    \vspace*{\stretch{1}}
+    {Dedicated to my grandmothers Subbalakshmi and Devakiamma.\par}
+    \vspace{1cm}
+    \includegraphics[width=3cm]{images/Hibiscus.png}
+    \vspace*{\stretch{1}}
+\end{center}
+
+\input{acknowledgements}
+
+\newpage
+\cleardoublepage
+\thispagestyle{empty}
+\begin{center}
+    {\LARGE \bf Thesis Approval}\\
+    \vspace{1.5cm}
+    {\large The thesis entitled}\\
+    {\huge\bfseries Crystal Plasticity Modeling of Discrete Twin Evolution in Hexagonal Closed Packed Metals\par}
+    \vspace{0.4cm}
+    {\large by}\\
+    \vspace{0.4cm}
+    {\Large \bf Achal H. P.}\\
+    \vspace{2mm}
+    {\large (Roll No. ME22MT011)}\\
+    \vspace{0.3cm}
+    {\large is approved for the degree of}\\
+    \vspace{0.5cm}
+    {\Large \bf Master of Technology}\\
+    \vspace{0.3cm}
+    {\large from the}\\
+    \vspace{0.3cm}
+    {\Large \bf Indian Institute of Technology Dharwad}\\
+    \vspace{2cm}
+    \begin{tabular}{ccc}
+      \rule{6.5cm}{1sp}                &\rule{10mm}{0pt}& \rule{6.5cm}{1sp} \\ \vspace{-0.4cm} \\
+      {\Large \textbf{Prof. Somashekara M. A.}}                 && {\Large \textbf{Prof. Amlan Barua}} \\ \vspace{-0.2cm} \\
+      {\large Chairperson}     && {\large External Examiner} \\ \vspace{1.5cm} \\
+      \rule{6.5cm}{1sp}                && \rule{6.5cm}{1sp} \\ \vspace{-0.4cm} \\
+      {\Large \textbf{Prof. Tejas P. Gotkhindi}}           && {\Large \textbf{Prof. Satyapriya Gupta}} \\  \vspace{-0.2cm} \\
+      {\large Internal Examiner}    && {\large Supervisor} \\ \vspace{2cm} \\
+    \end{tabular}
+    {\raggedright \Large  Date: 20 May 2024} \\ \vspace{0.5cm}
+    {\Large  Place: Dharwad} 
+\end{center}
+
+\input{declaration}
+
+\input{abstract}
+
+\tableofcontents
+
+%\chapter*{Nomenclature}
+%\addcontentsline{toc}{chapter}{Nomenclature}
+
+\listoffigures
+\addcontentsline{toc}{chapter}{List of figures}
+
+\listoftables
+\addcontentsline{toc}{chapter}{List of tables}
+
+%\chapter*{List of Symbols}
+%\addcontentsline{toc}{chapter}{List of Symbols}
+
+
+\chapter{Introduction}
+\pagenumbering{arabic}
+\input{chapter1}
+
+\chapter{Literature Review.}
+\input{chapter2}
+
+\chapter{Development of the Discrete Twinning constitutive model.}
+\input{chapter_model_development}
+
+\chapter{Model Study.}
+\input{chapter_model_study}
+
+%\chapter{Conclusions and discussions.}
+%input{}
+
+\chapter{Conclusions and Future Scope.}
+\input{Chapter_Future_scope}
+
+\appendix
+\chapter{Continuum Mechanics.}
+\label{Appendix:Continuum_mechanics}
+\input{Appendix_Continuum_Mechanics}
+
+\chapter{Implementation of correspondence matrix in DAMASK.}
+\label{Appendix:Correspondence_matrix}
+\input{Appendix_Correspondence_Matrix}
+
+\includepdf[pages=-, addtotoc={2, chapter, 2, Code to verify and visualize reorientation by twinning, lbl:pdfsection}, pagecommand={\thispagestyle{plain}}, offset=10mm -28mm]{Code_to_check_reorientation.pdf}
+
+\chapter{DAMASK Source Code Installation.}
+\label{Appendix:DAMASK_source_code_compilation}
+\input{Appendix_DAMASK_installation}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
